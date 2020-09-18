@@ -1,0 +1,46 @@
+﻿@if (Movies == null)
+{
+    @*<img width="100px" src="https://theplaycave.com.au/wp-content/uploads/2016/10/loading.gif" />*@
+    @if (NullTemplate != null)
+    {
+        @NullTemplate
+    }
+    else
+    {
+        <img width="100px" src="https://theplaycave.com.au/wp-content/uploads/2016/10/loading.gif" />
+    }
+}
+else if (Movies.Count == 0)
+{
+
+    @if (EmptyTemplate != null)
+    {
+        @EmptyTemplate
+    }
+    else
+    {
+        <text>There are no records to show</text>
+    }
+}
+else
+{
+    <input type="checkbox" @bind="displayButtons" />
+    @foreach (var movie in Movies)
+    {
+        <IndividualMovie Movie="movie" DisplayButtons="displayButtons" DeleteMovie="DeleteMovie" />
+    }
+
+}
+
+@code {
+    [Parameter] public List<Movie> Movies { get; set; }
+    [Parameter] public RenderFragment EmptyTemplate { get; set; }
+    [Parameter] public RenderFragment NullTemplate { get; set; }
+
+    bool displayButtons = true;
+
+    private void DeleteMovie(Movie movie)
+    {
+        Movies.Remove(movie);
+    }
+}
