@@ -1,38 +1,19 @@
 ﻿@page "/"
-@inject SingletonService singleton
-@inject TransientService transient
+@page "/index"
 @inject IRepository repo
-@using static BlazorApp3.Client.Shared.MainLayout
-
-
-<p style="color:@state.Color">Singleton count: @singleton.value</p>
-<p>Transient count: @transient.value</p>
 
 <div>
     <h3>Movie</h3>
     <MoviesList Movies="movies">
-        <NullTemplate>Null Tmeplate</NullTemplate>
-        <EmptyTemplate>Empty template</EmptyTemplate>
     </MoviesList>
+</div>
 
-</div>
-<div>
-    <h2>Create a movie</h2>
-    <DummyTextBox @attributes="dummyTextBoxParameters" />
-</div>
-<button @onclick="AddNewMovie">Add new movie</button>
 @code{
-    [CascadingParameter] public AppState state { get; set; }
-    private List<Movie> movies;
-    private Dictionary<string, object> dummyTextBoxParameters = new Dictionary<string, object>() { { "placeholder", "new movie name 2" }, { "disabled", "true" } };
+    
+    private List<Movie> movies;    
     protected override void OnInitialized()
     {
         movies = repo.GetMovies();
-    }
-
-    private void AddNewMovie()
-    {
-        movies.Add(new Movie() { Title = "Movie Sample", ReleaseDate = DateTime.Today });
     }
 
 }

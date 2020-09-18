@@ -10,16 +10,6 @@
     </div>
 
     <div class="content px-4">
-        <CascadingValue Value="appState">
-                @Body
-        </CascadingValue>
+        @Body
     </div>
 </div>
-
-@code{
-    AppState appState = new AppState();
-    public class AppState {
-        public string Color = "blue";
-        public string Size = "12px";
-    }
-}
