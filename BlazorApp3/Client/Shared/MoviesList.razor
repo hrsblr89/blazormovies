@@ -1,4 +1,7 @@
-﻿@if (Movies == null)
+﻿@inject IJSRuntime ijsruntime
+
+<input type="checkbox" @bind="displayButtons" />
+@if (Movies == null)
 {
     @*<img width="100px" src="https://theplaycave.com.au/wp-content/uploads/2016/10/loading.gif" />*@
     @if (NullTemplate != null)
@@ -24,23 +27,69 @@ else if (Movies.Count == 0)
 }
 else
 {
-    <input type="checkbox" @bind="displayButtons" />
+    
     @foreach (var movie in Movies)
     {
         <IndividualMovie Movie="movie" DisplayButtons="displayButtons" DeleteMovie="DeleteMovie" />
     }
 
 }
+<Confirmation OnCancel="onCancel" OnConfirm="onConfirm" Title="Confirm Movie Delete" @ref="confirmation">
+    Do you wish to delete this movie : @movieTobeDelete.Title?
+    </Confirmation>
 
 @code {
+    Confirmation confirmation;
     [Parameter] public List<Movie> Movies { get; set; }
     [Parameter] public RenderFragment EmptyTemplate { get; set; }
     [Parameter] public RenderFragment NullTemplate { get; set; }
 
     bool displayButtons = true;
+    Movie movieTobeDelete;
 
-    private void DeleteMovie(Movie movie)
+    private async Task DeleteMovie(Movie movie)
     {
-        Movies.Remove(movie);
+        movieTobeDelete = movie;
+        confirmation.Show();
+        //await ijsruntime.MyFunction("Custom fuction");
+        //var confirmed = await ijsruntime.Confirm($"Are you sure you want to delete {movie.Title}?");
+        //if (confirmed)
+        //{
+        //    Movies.Remove(movie);
+        //}
     }
+
+    void onConfirm()
+    {
+        Movies.Remove(movieTobeDelete);
+        confirmation.Hide();
+        movieTobeDelete = null;
+    }
+
+    void onCancel()
+    {
+        confirmation.Hide();
+        movieTobeDelete = null;
+    }
+
+
+    //protected override void OnInitialized()
+    //{
+    //    Console.WriteLine("OnInitialized. Movies.Count=" + Movies.Count.ToString());
+    //}
+
+    //protected override void OnParametersSet()
+    //{
+    //    Console.WriteLine("OnParametersSet. Movies.Count=" + Movies.Count.ToString());
+    //}
+
+    //protected override void OnAfterRender(bool firstRender)
+    //{
+    //    Console.WriteLine("OnAfterRender. FirstRender=" + firstRender.ToString());
+    //}
+
+    //protected override bool ShouldRender()
+    //{
+    //    return true;
+    //}
 }

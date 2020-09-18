@@ -1,28 +1,31 @@
 ﻿@page "/counter"
 
-<h1>Counter</h1>
 
-<p>Current count: @currentCount</p>
+<h1 style="color:@state.Color">Counter</h1>
+
+<div style="display:flex">
+    <div style="width:150px">
+        <select @bind="state.Color" class="form-control" style="margin-top:15px;">
+            <option value="green">Green</option>
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+        </select>
+    </div>
+    <div style="width:150px">
+        <select @bind="state.Size" class="form-control" style="margin-top:15px;">
+            <option value="12px">12 px</option>
+            <option value="20px">20 px</option>
+            <option value="30px">30 px</option>
+        </select>
+    </div>
+</div>
+
+<p style="color:@state.Color; font-size:@state.Size">Current count: @currentCount</p>
+<p>Singleton count: @singleton.value</p>
+<p>Transient count: @transient.value</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="IncrementCountJavaScript">Click me Javascrip</button>
 <input type="number" @bind="currentCount"/>
 <MoviesList Movies="movies"/>
 
-@code {
-    private int currentCount = 0;
-
-    private List<Movie> movies;
-    protected override void OnInitialized()
-    {
-        movies = new List<Movie>()
-            {
-                new Movie() { Title = "Joker", ReleaseDate = new DateTime(2019, 7, 2) },
-                new Movie() { Title = "Avengers", ReleaseDate = new DateTime(2016, 11, 23) },
-            };
-    }
-
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
-}

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using BlazorApp3.Client.Helpers;
 
 namespace BlazorApp3.Client
 {
@@ -18,8 +19,16 @@ namespace BlazorApp3.Client
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
+            ConfigureServices(builder.Services);
             await builder.Build().RunAsync();
+        }
+
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddOptions(); // needed for authorization
+            services.AddSingleton<SingletonService>();
+            services.AddTransient<TransientService>();
+            services.AddScoped<IRepository, RepositoryInMemory>();
         }
     }
 }
