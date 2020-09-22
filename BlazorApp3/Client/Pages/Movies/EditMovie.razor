@@ -1,6 +1,32 @@
 ﻿@page "/movies/edit/{MovieID:int}"
 <h3>Edit Movie</h3>
 
+<MovieForm Movie="Movie" OnValidSubmit="Edit" SelectedGenres="Selected" NotSelectedGenres="NotSelected"></MovieForm>
+
 @code {
     [Parameter] public int MovieID { get; set; }
+    private Movie Movie;
+
+    protected override void OnInitialized()
+    {
+        Movie = new Movie() { Id = MovieID, Title = "My Movie" };
+    }
+
+    private List<Genre> NotSelected = new List<Genre>()
+    {
+        
+        new Genre(){Id = 2, Name="Comedy"},
+        new Genre(){Id = 3, Name="Drama"},
+        new Genre(){Id = 4, Name="Horror"}
+    };
+
+    private List<Genre> Selected = new List<Genre>()
+    {
+        new Genre(){Id = 1, Name="Action"}
+    };
+
+    private void Edit()
+    {
+        Console.WriteLine("Editing the movie...");
+    }
 }

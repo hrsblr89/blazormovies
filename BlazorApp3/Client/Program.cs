@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using BlazorApp3.Client.Helpers;
+using Tewr.Blazor.FileReader;
 
 namespace BlazorApp3.Client
 {
@@ -27,6 +28,7 @@ namespace BlazorApp3.Client
         {
             services.AddOptions(); // needed for authorization
             services.AddScoped<IRepository, RepositoryInMemory>();
+            services.AddFileReaderService(options => options.InitializeOnFirstCall = true);
         }
     }
 }
