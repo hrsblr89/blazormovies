@@ -1,5 +1,6 @@
 ﻿@page "/movies/create"
 @inject NavigationManager navManager
+@inject IMoviesRepository moviesRepository
 
 <h3>Create Movie</h3>
 
@@ -17,9 +18,18 @@
         new Genre(){Id = 4, Name="Horror"}
     };
 
-    private void SaveMovie()
+    private async Task SaveMovie()
     {
         // saving movie
         Console.WriteLine("Create");
+        try
+        {
+            var movieId = await moviesRepository.CreateMovie(Movie);
+            navManager.NavigateTo($"movie/{movieId}/{Movie.Title.Replace(" ", "-")}");
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }

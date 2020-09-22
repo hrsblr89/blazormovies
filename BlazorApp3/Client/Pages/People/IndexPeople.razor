@@ -5,6 +5,37 @@
     <a class="btn btn-info" href="person/create">New Person</a>
 </div>
 
+
+@if (Genres != null)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Genres)
+            {
+                <tr>
+                    <td>
+                        <a class="btn btn-success">Edit</a>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                    <td>
+                        @item.Name
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+}
+
+
 @code {
 
 }

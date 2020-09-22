@@ -1,5 +1,5 @@
 ﻿
-<EditForm Model="Movie" OnValidSubmit="OnValidSubmit">
+<EditForm Model="Movie" OnValidSubmit="OnDataAnnotationsValidated">
     <DataAnnotationsValidator />
     <div class="form-group">
         <label>Title:</label>
@@ -44,6 +44,21 @@
             <MultipleSelector Selected="Selected" NotSelected="NotSelected"></MultipleSelector>
         </div>
     </div>
+
+    <div class="form-group">
+        <label>Actors:</label>
+        <div>
+            <MultipleSelectorTypeahead Context="person" SearchMethod="SearchMethod" SelectedElements="SelectedActors">
+                <MyResultTemplate>
+                    <img style="width: 50px;" src="@person.Picture"/>
+                    @person.Name
+                </MyResultTemplate>
+                <MyListTemplate>
+                    @person.Name /<input type="text" placeholder="Character" @bind="person.Character" />
+                </MyListTemplate>
+            </MultipleSelectorTypeahead>
+        </div>
+    </div>
     <button class="btn btn-primary">Save Changes</button>
 </EditForm>
 
@@ -52,6 +67,8 @@
     [Parameter] public EventCallback OnValidSubmit { get; set; }
     [Parameter] public List<Genre> NotSelectedGenres { get; set; }
     [Parameter] public List<Genre> SelectedGenres { get; set; } = new List<Genre>();
+
+    [Parameter] public List<Person> SelectedActors { get; set; } = new List<Person>();
 
     private List<MultipleSelectorModel> Selected = new List<MultipleSelectorModel>();
     private List<MultipleSelectorModel> NotSelected = new List<MultipleSelectorModel>();
@@ -75,6 +92,24 @@
         Movie.Poster = imageBase64;
         imageURL = null;
         Console.WriteLine(imageBase64);
+    }
+
+    private async Task<IEnumerable<Person>> SearchMethod(string SearchText)
+    {
+        return new List<Person>() {
+            new Person() { Id=1, Name="Tom Holland", Picture= "https://m.media-amazon.com/images/M/MV5BNTAzMzA3NjQwOF5BMl5BanBnXkFtZTgwMDUzODQ5MTI@._V1_QL50_SY1000_CR0,0,824,1000_AL_.jpg" },
+            new Person() { Id =2, Name="Tom Hanks", Picture="https://m.media-amazon.com/images/M/MV5BMTQ2MjMwNDA3Nl5BMl5BanBnXkFtZTcwMTA2NDY3NQ@@._V1_QL50_SY1000_CR0,0,691,1000_AL_.jpg"}
+        };
+    }
+
+    private async Task OnDataAnnotationsValidated()
+    {
+        Movie.MoviesGenres = Selected
+            .Select(x => new MoviesGenres { GenresID = int.Parse(x.Key) }).ToList();
+        Movie.MoviesActors = SelectedActors
+            .Select(x => new MoviesActors { PersonID = x.Id, Character = x.Character }).ToList();
+        if (!string.IsNullOrEmpty(Movie.Poster)) { imageURL = null; }
+        await OnValidSubmit.InvokeAsync(null);
     }
 
 }

@@ -18,6 +18,7 @@ namespace BlazorApp3.Shared.Entities
         public string Poster { get; set; }
 
         public List<MoviesGenres> MoviesGenres { get; set; } = new List<MoviesGenres>();
+        public List<MoviesActors> MoviesActors { get; set; } = new List<MoviesActors>();
 
         public string TitleBrief
         {

@@ -8,5 +8,7 @@ namespace BlazorApp3.Shared.Entities
     {
         public int MovieId { get; set; }
         public int GenresID { get; set; }
+        public Movie Movie { get; set; }
+        public Genre Genre { get; set; }
     }
 }

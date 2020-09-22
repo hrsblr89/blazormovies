@@ -3,7 +3,7 @@
 <CustomTypeAhead SearchMethod="@((string searchText) => SearchMethod(searchText))"
                  ValueChanged="@((T item)=>SelectedElement(item))">
     <ResultTemplate>
-        @MyResultTemplage(context)
+        @MyResultTemplate(context)
     </ResultTemplate>
 </CustomTypeAhead>
 
@@ -12,9 +12,13 @@
     {
         <li draggable="true"
             @ondragstart="@(() => HandleDragStart(item))"
-            @ondragend="@(() => HandleDragOver(item))">
-            @MyListTemplate
-            <span @onclick="@(() => SelectedElements.Remove(item))">X</span>
+            @ondragover="@(() => HandleDragOver(item))"
+            class="list-group-item list-group-item-action"
+            >
+            @MyListTemplate(item)
+            <span 
+                  class="badge badge-primary badge-pill" style="cursor:pointer;"
+                  @onclick="@(() => SelectedElements.Remove(item))">X</span>
         </li>
     }
 </ul>
@@ -22,7 +26,7 @@
 @code {
     [Parameter] public List<T> SelectedElements { get; set; }
     [Parameter] public Func<string, Task<IEnumerable<T>>> SearchMethod { get; set; }
-    [Parameter] public RenderFragment<T> MyResultTemplage { get; set; }
+    [Parameter] public RenderFragment<T> MyResultTemplate { get; set; }
     [Parameter] public RenderFragment<T> MyListTemplate { get; set; }
 
 
