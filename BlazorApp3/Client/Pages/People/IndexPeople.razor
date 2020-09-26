@@ -1,4 +1,5 @@
 ﻿@page "/people"
+@inject IPersonRepository personRepository 
 <h3>Index People</h3>
 
 <div class="form-group">
@@ -6,7 +7,7 @@
 </div>
 
 
-@if (Genres != null)
+@if (People != null)
 {
     <table class="table table-striped">
         <thead>
@@ -17,11 +18,11 @@
         </thead>
         <tbody>
 
-            @foreach (var item in Genres)
+            @foreach (var item in People)
             {
                 <tr>
                     <td>
-                        <a class="btn btn-success">Edit</a>
+                        <a class="btn btn-success" href="person/edit/@item.Id">Edit</a>
                         <button class="btn btn-danger">Delete</button>
                     </td>
                     <td>
@@ -37,5 +38,16 @@
 
 
 @code {
-
+    List<Person> People;
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            People = await personRepository.GetPeople();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
 }

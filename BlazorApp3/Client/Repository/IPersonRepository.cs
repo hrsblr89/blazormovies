@@ -10,5 +10,8 @@ namespace BlazorApp3.Client.Repository
     {
         Task CreatePerson(Person person);
         Task<List<Person>> GetPeople();
+        Task<List<Person>> GetPeopleByName(string name);
+        Task<Person> GetPerson(int id);
+        Task UpdatePerson(Person person);
     }
 }

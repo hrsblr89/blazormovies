@@ -1,7 +1,9 @@
 ﻿@page "/genres"
 @inject IGenreRepository genreRepository
 <h3>Index Genres</h3>
-
+<div class="form-group">
+    <a class="btn btn-info" href="genre/create">New Genre</a>
+</div>
 @if (Genres != null)
 {
     <table class="table table-striped">
@@ -17,7 +19,7 @@
             {
                 <tr>
                     <td>
-                        <a class="btn btn-success">Edit</a>
+                        <a class="btn btn-success" href="genre/edit/@item.Id">Edit</a>
                         <button class="btn btn-danger">Delete</button>
                     </td>
                     <td>
@@ -31,9 +33,7 @@
     </table>
 }
 
-<div class="form-group">
-    <a class="btn btn-info" href="genre/create">New Genre</a>
-</div>
+
 @code {
     List<Genre> Genres;
     protected override async Task OnInitializedAsync()

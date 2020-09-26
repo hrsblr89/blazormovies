@@ -19,7 +19,7 @@ namespace BlazorApp3.Server
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MoviesActors>().HasKey(x => new { x.MovieID, x.PersonID });
-            modelBuilder.Entity<MoviesGenres>().HasKey(x => new { x.MovieId, x.GenresID });
+            modelBuilder.Entity<MoviesGenres>().HasKey(x => new { x.MovieId, x.GenreID });
             base.OnModelCreating(modelBuilder);
         }
 
